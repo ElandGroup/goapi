@@ -1,15 +1,18 @@
 package main
 
-import(
-    "fmt"
-    "net/http"
-    
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 )
 
-func main(){
+func main() {
+	newRouter := mux.NewRouter()
+	newRouter.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, "Hello goapi")
+	})
 
-    http.HandleFunc("/",func(w http.ResponseWriter,r *http.Request){
-        fmt.Fprint(w,"Hello goapi")
-    })
-    http.ListenAndServe(":8081",nil)
+	http.ListenAndServe(":5000", handlers.CORS()(newRouter))
 }
